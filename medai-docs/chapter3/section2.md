@@ -1,113 +1,101 @@
-# 3.2 实践示例
+# 4.2 思维链COT
 
-那具体 RAG 怎么做呢？我们用一个简单的 LangChain 代码示例来展示 RAG 的使用。
+### 思维链(Chain of Thoughts,CoT)
 
-**环境准备**
+2022年Google 发布的论文《Chain-of- Thought Prompting Elicits Reasoning in Large Lanquage Models》首次提出:通过让大模型逐步参与将一个复杂问题分解为一步一步的子问题并依次进行求解的过程可以显著提升大模型的性能。而这一系列推理的中间步骤就被称为思维链(Chain of Thought)。
 
-安装相关依赖
+![img](https://pic4.zhimg.com/80/v2-ca642998e37328be1cb9c130ab46716d_1440w.webp)
 
-```
-# 环境准备，安装相关依赖
-pip install langchain sentence_transformers chromadb 
-```
+在上面的例子中，引入的链式思考（CoT）提示通过中间推理步骤实现了复杂的推理能力。您可以将其与少样本提示相结合，以获得更好的结果，以便在回答之前进行推理的更复杂的任务。
 
-**本地数据加载**
-这个例子使用了保罗·格雷厄姆（Paul Graham）的文章"What I Worked On"的文本。下载文本后，放置到"./data"目录下。Langchain 提供了很多文件加载器，包括 word、csv、PDF、GoogleDrive、Youtube等，使用方法也很简单。这里直接使用 TextLoader 加载txt文本。
+例如：计算一本书的总字数
 
-```
-from langchain.document_loaders import TextLoader
-loader = TextLoader("./data/paul_graham_essay.txt")
-documents = loader.load() 
-```
+1. 第一步:确定书总共有多少页--第一个子问题
+2. 第二步:估算或测量一页大致有多少字 --第二个子问题!
+3. 第三步:将两部分信息相乘，得到总字数的估计值
 
-**文档分割(split_documents)**
+大模型逐步参与讲一个复杂问题分解为一步一步的子问题。
 
-文档分割，借助 langchain 的字符分割器。代码中我们指定 chunk_size=500, chunk_overlap=10， 这样的意思就是我们每块的文档中是 500 个字符，chunk_overlap 表示字符重复的个数，这样可以避免语义被拆分后不完整。
+请记住，作者声称这是足够大的语言模型才会出现的新兴能力。
 
-```
-# 文档分割
-from langchain.text_splitter import CharacterTextSplitter
-# 创建拆分器
-text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=10)
-# 拆分文档
-documents = text_splitter.split_documents(documents)   
-```
+### LTM 提示方法
 
-**向量化(embedding)**
-接下来对分割后的数据进行 embedding，并写入数据库。LangChain 提供了许多嵌入模型的接口，例如 OpenAI、Cohere、Hugging Face、Weaviate等，请参考 LangChain 官网。这里选用 m3e-base 作为 embedding 模型，向量数据库选用 Chroma。
+在[谷歌大脑](https://zhida.zhihu.com/search?content_id=246856288&content_type=Article&match_order=1&q=谷歌大脑&zhida_source=entity)提出的CoT被实际验证能够大幅提升[大语言模型](https://zhida.zhihu.com/search?content_id=246856288&content_type=Article&match_order=1&q=大语言模型&zhida_source=entity)的推理能力不久，来自谷歌大脑的另一个团队在此基础上发表了另一篇重量级论文《LEAST-TO-MOST PROMPTING ENABLES COMPLEX REASONING IN LARGE LANGUAGE MODELS》，并在其中提出了一种名为Least-to-Most (LtM)的提示方法，将大语言模型的推理能力进一步提高。
 
-```
-from langchain.embeddings import HuggingFaceBgeEmbeddings
-from langchain.vectorstores import Chroma
-# embedding model: m3e-base
-model_name = "moka-ai/m3e-base"
-model_kwargs = {'device': 'cpu'}
-encode_kwargs = {'normalize_embeddings': True}
-embedding = HuggingFaceBgeEmbeddings(
-		model_name=model_name,    
-    model_kwargs=model_kwargs,   
-    encode_kwargs=encode_kwargs
-) 
+从最少到最多， 解决思维链泛化能力不足的问题。
+
+泛化能力：就是我们给出的例子不容易迁移到其他问题上。这就叫泛化能力不足。
+
+![img](https://pic2.zhimg.com/80/v2-165488426fafcdb07fa41bfe1e302a7f_1440w.webp)
+
+### 自我一致性 Self-Consistency
+
+总结成一句话就是首先利用COT生成多个推理路径和答案，最终选择答案出现最多的作为最终答案输出。
+
+![img](https://picx.zhimg.com/80/v2-a8af18c85ba32c1bf849a2a3d245a32f_1440w.webp)
+
+零样本思维链，出现次数最多的回答，输出出来。
+
+#### 示例
+
+也许在提示工程中更高级的技术之一是自我一致性。由[Wang等人（2022）(opens in a new tab)](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2203.11171.pdf)提出，自我一致性旨在“替换链式思维提示中使用的天真贪婪解码方法”。其想法是通过少样本 CoT 采样多个不同的推理路径，并使用生成结果选择最一致的答案。这有助于提高 CoT 提示在涉及算术和常识推理的任务中的性能。
+
+让我们尝试以下算术推理示例：
+
+*提示：*
+
+```text
+当我6岁时，我的妹妹是我的一半年龄。现在我70岁了，我的妹妹多大？
 ```
 
-**数据入库**
+*输出：*
 
-将嵌入后的结果存储在 VectorDB 中，常见的 VectorDB包括 Chroma、weaviate 和 FAISS 等，这里使用 Chroma 来实现。Chroma 与 LangChain 整合得很好，可以直接使用 LangChain 的接口进行操作。
-
-```
-# 指定 persist_directory 将会把嵌入存储到磁盘上。
-persist_directory = 'db'
-db = Chroma.from_documents(documents, embedding, persist_directory=persist_directory) 
+```text
+35
 ```
 
-**检索(Retrieve)**
-向量数据库被填充后，可以将其定义为检索器组件，该组件根据用户查询与嵌入式块之间的语义相似性获取附加上下文。
+输出是错误的！我们如何通过自我一致性来改进这个问题？让我们试试。我们将使用 Wang 等人 2022 年的少量样本范例（表 17 ）：
 
-```
-retriever = db.as_retriever() 
-```
+*提示：*
 
-**增强(Augment)**
-接下来，为了将附加上下文与提示一起使用，需要准备一个提示模板。如下所示，可以轻松地从提示模板自定义提示。
-
-```
-from langchain.prompts import ChatPromptTemplate
-
-template = """You are an assistant for question-answering tasks.
-Use the following pieces of retrieved context to answer the question.
-If you don't know the answer, just say that you don't know.
-Use three sentences maximum and keep the answer concise.
-Question: {question}
-Context: {context}
-Answer:   """
-prompt = ChatPromptTemplate.from_template(template) 
-```
-
-**生成(Generate)**
-最后，可以构建一个 RAG 流水线的链，将检索器、提示模板和LLM连接在一起。一旦定义了 RAG 链，就可以调用它。本地通过 ollama 运行的 llama3 来作为 LLM 使用。如果不了解本地ollama部署模型的流程，可以参考这篇文章。
-
-```
-from langchain_community.chat_models import ChatOllama
-from langchain.schema.runnable import RunnablePassthrough
-from langchain.schema.output_parser import StrOutputParser
-llm = ChatOllama(model='llama3')
-rag_chain = ( 
-		{"context": retriever, "question": RunnablePassthrough()}
-		| prompt
-		| llm
-		| StrOutputParser()
-)
-
-query = "What did the author do growing up?"
-response = rag_chain.invoke(query)
-print(response) 
+```text
+Q：林中有15棵树。林业工人今天将在林中种树。完成后，将有21棵树。林业工人今天种了多少棵树？
+A：我们从15棵树开始。后来我们有21棵树。差异必须是他们种树的数量。因此，他们必须种了21-15 = 6棵树。答案是6。
+Q：停车场有3辆汽车，又来了2辆汽车，停车场有多少辆汽车？
+A：停车场已经有3辆汽车。又来了2辆。现在有3 + 2 = 5辆汽车。答案是5。
+Q：Leah有32块巧克力，她的姐姐有42块。如果他们吃了35块，他们总共还剩多少块？
+A：Leah有32块巧克力，Leah的姐姐有42块。这意味着最初有32 + 42 = 74块巧克力。已经吃了35块。因此，他们总共还剩74-35 = 39块巧克力。答案是39。
+Q：Jason有20个棒棒糖。他给Denny一些棒棒糖。现在Jason只有12个棒棒糖。Jason给Denny多少棒棒糖？
+A：Jason有20个棒棒糖。因为他现在只有12个，所以他必须把剩下的给Denny。他给Denny的棒棒糖数量必须是20-12 = 8个棒棒糖。答案是8。
+Q：Shawn有五个玩具。圣诞节，他从他的父母那里得到了两个玩具。他现在有多少个玩具？
+A：他有5个玩具。他从妈妈那里得到了2个，所以在那之后他有5 + 2 = 7个玩具。然后他从爸爸那里得到了2个，所以总共他有7 + 2 = 9个玩具。答案是9。
+Q：服务器房间里有9台计算机。从周一到周四，每天都会安装5台计算机。现在服务器房间里有多少台计算机？
+A：从周一到周四有4天。每天都添加了5台计算机。这意味着总共添加了4 * 5 =
+20台计算机。一开始有9台计算机，所以现在有9 + 20 = 29台计算机。答案是29。
+Q：Michael有58个高尔夫球。星期二，他丢失了23个高尔夫球。星期三，他又丢失了2个。星期三结束时他还剩多少个高尔夫球？
+A：Michael最初有58个球。星期二他丢失了23个，所以在那之后他有58-23 = 35个球。星期三他又丢失了2个，所以现在他有35-2 = 33个球。答案是33。
+Q：Olivia有23美元。她用每个3美元的价格买了五个百吉饼。她还剩多少钱？
+A：她用每个3美元的价格买了5个百吉饼。这意味着她花了15美元。她还剩8美元。
+Q：当我6岁时，我的妹妹是我的一半年龄。现在我70岁了，我的妹妹多大？
+A：
 ```
 
+*输出 1：*
 
-我这里的本地llama3环境下，输出为：
-
+```text
+当我6岁时，我的妹妹是我的一半年龄，也就是3岁。现在我70岁了，所以她是70-3 = 67岁。答案是67。
 ```
-Before college, Paul Graham worked on writing and programming outside of school. He didn't write essays, but instead focused on writing short stories. His stories were not very good, having little plot and just characters with strong feelings. 
+
+*输出 2：*
+
+```text
+当叙述者6岁时，他的妹妹是他年龄的一半，也就是3岁。现在叙述者70岁了，他的妹妹应该是70-3 = 67岁。答案是67。
 ```
 
-从这个输出中，可以看到已经将我们提供的文本中的相关信息检索出来，并由 LLM 总结回答我们的问题了。
+*输出 3：*
+
+```text
+当我6岁时，我的妹妹是我的一半年龄，也就是3岁。现在我70岁了，所以她是70/2 = 35岁。答案是35。
+```
+
+计算最终答案涉及几个步骤（详见论文），但为了简单起见，我们可以看到已经出现了大多数答案，因此这基本上将成为最终答案。

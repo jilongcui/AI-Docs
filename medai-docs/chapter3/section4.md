@@ -1,0 +1,367 @@
+# 4.4 提示词实践
+
+在本节中，我们会提供更多示例，介绍如何使用提示词来完成不同的任务，并介绍其中涉及的重要概念。通常，学习概念的最佳方式是通过例子。下面几个例子展示了如何使用精心制作的提示词来执行不同类型的任务。
+
+主题：
+
+- [Hello World](#Hello WORLD)
+- [文本概括](#文本概括)
+- [信息提取](#信息提取)
+- [问答](#问答)
+- [文本分类](#文本分类)
+- [对话](#对话)
+- [代码生成](#代码生成)
+- [推理](#推理)
+
+
+
+## Hello World
+
+在过去，每一门编程语言的学习，总是以一个：`Hello, World.` 的例子开始。
+
+今天，我们遵循这个传统，打开自然语言编程的大门。
+
+打开 ChatGPT，输入下面的 Prompt
+
+Prompt
+
+```
+Hello, ChatGPT.
+```
+
+
+
+ChatGPT
+
+```
+Hello! How can I assist you today?
+```
+
+
+
+
+
+在本教程中，发送给 ChatGPT的内容均使用 `Prompt` 表示；ChatGPT 回复的内容 使用 `ChatGPT` 表示。
+
+如果你使用的是 ChatGPT，那应当会看到如下的对话内容：
+
+![ChatGPT](https://gptpmt.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhello-1.9b4ecb02.png&w=1920&q=75)
+
+💡
+
+ChatGPT回复你的内容可能不是 **`Hello! How can I assist you today?`** 不必担心，并不是你的Prompt有问题，而是GPT本身具有随机性，后面的课程我们会详细介绍。
+
+恭喜 🎉，你已经完成了自己第一个 Prompt 的编写，从此刻起，你已经是一位 Prompt Engineer 了 😄
+
+## 文本概括
+
+自然语言生成中的一个标准任务是文本摘要。文本摘要可以涵盖许多不同的风格和领域。事实上，语言模型最有前景的应用之一就是将文章和概念概括成简洁易读的摘要。让我们尝试使用提示进行一个基本的摘要任务。
+
+*提示词：*
+
+```
+Explain antibioticsA:
+```
+
+
+
+*输出：*
+
+```
+Antibiotics are a type of medication used to treat bacterial infections. They work by either killing the bacteria or preventing them from reproducing, allowing the body’s immune system to fight off the infection. Antibiotics are usually taken orally in the form of pills, capsules, or liquid solutions, or sometimes administered intravenously. They are not effective against viral infections, and using them inappropriately can lead to antibiotic resistance.
+```
+
+
+
+"A:" 是一种在问答中使用的显式提示格式，你在这里使用它是为了告诉模型接下来你期望有一个答案。在这个例子中，我们可能还不清楚使用它是否有用，我们会在之后的示例中探讨这一点。现在假设我们感觉模型给了太多的信息，想要进一步提炼它。 我们可以指导模型帮我们用一句话总结相关内容：
+*提示词：*
+
+```
+Antibiotics are a type of medication used to treat bacterial infections. They work by either killing the bacteria or preventing them from reproducing, allowing the body’s immune system to fight off the infection. Antibiotics are usually taken orally in the form of pills, capsules, or liquid solutions, or sometimes administered intravenously. They are not effective against viral infections, and using them inappropriately can lead to antibiotic resistance.Explain the above in one sentence:
+```
+
+
+
+> 译注：`Explain the above in one sentence`可翻译为`用一句话解释上面的信息：`
+
+*输出：*
+
+```
+Antibiotics are medications used to treat bacterial infections by either killing the bacteria or stopping them from reproducing, but they are not effective against viruses and overuse can lead to antibiotic resistance.
+```
+
+
+
+在不过多关注上面输出的准确性的情况下（这是我们将在后续指南中讨论的内容），模型尝试将段落总结成一句话。你可以对指令进行巧妙的设计，但我们将留到后面的章节再讨论。你可以暂时停住并进行实验，看看是否能获得更好的结果。
+
+------
+
+## 信息提取
+
+虽然语言模型是被训练用于执行自然语言生成及相关任务，但它同样非常擅长执行分类和一系列其他自然语言处理（NLP）任务。
+
+这是一个从给定段落中提取信息的提示词示例。
+
+*提示词：*
+
+```
+Author-contribution statements and acknowledgements in research papers should state clearly and specifically whether, and to what extent, the authors used AI technologies such as ChatGPT in the preparation of their manuscript and analysis. They should also indicate which LLMs were used. This will alert editors and reviewers to scrutinize manuscripts more carefully for potential biases, inaccuracies and improper source crediting. Likewise, scientific journals should be transparent about their use of LLMs, for example when selecting submitted manuscripts.Mention the large language model based product mentioned in the paragraph above:
+```
+
+
+
+*输出：*
+
+```
+The large language model based product mentioned in the paragraph above is ChatGPT.
+```
+
+
+
+你可以通过许多方法来改进上述结果，但这已经非常有用了。
+
+现在应该很明显，你可以通过简单地指示模型做什么来让它执行不同的任务。这是一个强大的能力，AI产品开发人员已经在利用它来构建强大的产品和体验。
+
+段落来源: [ChatGPT: five priorities for research(opens in a new tab)](https://www.nature.com/articles/d41586-023-00288-7)
+
+------
+
+## 问答
+
+让模型给出具体回答的最佳方法之一是改善提示的格式。如前所述，一个提示可以结合指令、上下文、输入和输出指示（output indicators）来获得更好的结果。虽然这些组成部分不是必需的，但随着你给出的指令越具体，你将获得越好的结果，这成为了一种良好的实践。下面是一个例子，展示了按照更结构化的提示词来会是什么样子的。
+
+*提示词：*
+
+```
+Answer the question based on the context below. Keep the answer short and concise. Respond "Unsure about answer" if not sure about the answer.Context: Teplizumab traces its roots to a New Jersey drug company called Ortho Pharmaceutical. There, scientists generated an early version of the antibody, dubbed OKT3. Originally sourced from mice, the molecule was able to bind to the surface of T cells and limit their cell-killing potential. In 1986, it was approved to help prevent organ rejection after kidney transplants, making it the first therapeutic antibody allowed for human use.Question: What was OKT3 originally sourced from?Answer:
+```
+
+
+
+*输出：*
+
+```
+Mice.
+```
+
+
+
+上下文获取自 [Nature(opens in a new tab)](https://www.nature.com/articles/d41586-023-00400-x)。
+
+------
+
+## 文本分类
+
+到目前为止，你已经使用了简单的指令来执行任务。作为提示词工程师，你需要更擅长提供更好的指令。但这还不是全部！你还会发现，在更困难的用例中，仅仅提供指令是不够的。这就是你需要更多考虑上下文和其他元素（在提示词中使用）的地方。你可以提供的其他元素包括`输入数据`或`示例`。
+
+让我们通过一个文本分类的示例来演示这一点。
+
+*提示词：*
+
+```
+Classify the text into neutral, negative or positive. Text: I think the food was okay. Sentiment:
+```
+
+
+
+*输出：*
+
+```
+Neutral
+```
+
+
+
+你给出了对文本进行分类的指令，模型以`'Neutral'`回应，这是正确的。这没有问题，但假设你真正需要的是让模型以你希望的确切格式给出标签。因此，你希望它返回的是`neutral`而不是`Neutral`。你如何实现这一点呢？有几种不同的方法可以做到这一点。在这里，你关心的是具体性，所以你给提示词提供的信息越多，结果就越好。你可以尝试提供示例来指定正确的行为。让我们再试一次：
+
+*提示词：*
+
+```
+Classify the text into neutral, negative or positive. Text: I think the vacation is okay.Sentiment: neutral Text: I think the food was okay. Sentiment:
+```
+
+
+
+*输出：*
+
+```
+neutral
+```
+
+
+
+完美！这次模型返回了`neutral`，这是你所寻找的具体标签。看起来，提示中提供的示例帮助模型在其输出中保持了具体性。
+
+为了强调有时具体性为什么很重要，请查看下面的例子并找出问题所在：
+
+*提示词：*
+
+```
+Classify the text into nutral, negative or positive. Text: I think the vacation is okay.Sentiment:
+```
+
+
+
+*输出：*
+
+```
+Neutral
+```
+
+
+
+这里的问题是什么？作为提示，模型完全忽略了虚构的`nutral`标签。相反，模型输出了`Neutral`，因为它对这个标签有一定的偏好。但假设你真正想要的是`nutral`。你怎么解决这个问题？也许你可以尝试为标签添加描述或在提示中增加更多示例？如果你不确定，我们将在接下来的部分讨论一些想法。
+
+------
+
+## 对话
+
+你可以通过提示工程进行更有趣的实验，比如指导大语言模型系统如何表现，指定它的行为意图和身份。 当你在构建对话系统，如客户服务聊天机器人时，这尤其有用。
+
+比如，可以通过以下示例创建一个对话系统，该系统能够基于问题给出技术性和科学的回答。 你可以关注我们是如何通过指令明确地告诉模型应该如何表现。 这种应用场景有时也被称为*角色提示（Role Prompting）*。
+
+*提示词：*
+
+```
+The following is a conversation with an AI research assistant. The assistant tone is technical and scientific.Human: Hello, who are you?AI: Greeting! I am an AI research assistant. How can I help you today?Human: Can you tell me about the creation of blackholes?AI:
+```
+
+
+
+*输出：*
+
+```
+Sure! Black holes are regions of spacetime where the gravitational force is so strong that nothing, not even light, can escape from it. They are created when a very massive star dies and its core collapses in on itself, forming a singularity of infinite density. The intense gravity of the singularity pulls in all the matter and radiation around it, creating the black hole.
+```
+
+
+
+我们的AI研究助手听起来有点太技术性了，对吗？好的，让我们改变这种行为，并指示系统给出更易于理解的回答。
+
+*提示词：*
+
+```
+The following is a conversation with an AI research assistant. The assistant answers should be easy to understand even by primary school students.Human: Hello, who are you?AI: Greeting! I am an AI research assistant. How can I help you today?Human: Can you tell me about the creation of black holes?AI: 
+```
+
+
+
+*输出：*
+
+```
+Sure! Black holes are created when a very massive star runs out of fuel and collapses in on itself. The gravity of the star is so strong that nothing, not even light, can escape its pull. This creates a point in space-time with an intense gravitational force called a black hole.
+```
+
+
+
+我想我们应该取得了一些进展， 你也可以继续改进它。 如果你再添加更多的示例，可能会得到更好的结果。
+
+------
+
+## 代码生成
+
+大语言模型（LLMs）在代码生成方面非常有效。 在此方面，Copilot 就是一个很好的示例。通过巧妙的提示，你可以执行大量的代码生成任务。下面我们来看几个示例。
+
+我们先用它写个简单的用户欢迎程序：
+
+*提示词：*
+
+```
+/*Ask the user for their name and say "Hello"*/
+```
+
+
+
+*输出：*
+
+```
+let name = prompt("What is your name?");console.log(`Hello, ${name}!`);
+```
+
+
+
+你看，我们甚至都不需要指定要使用的编程语言。
+
+来，我们再稍微升级一下。 下面的示例展示了通过稍微多一点的提示词设计工作，LLMs可以变得多么强大。
+
+*提示词：*
+
+```
+"""Table departments, columns = [DepartmentId, DepartmentName]Table students, columns = [DepartmentId, StudentId, StudentName]Create a MySQL query for all students in the Computer Science Department"""
+```
+
+
+
+*输出：*
+
+```
+SELECT StudentId, StudentName FROM students WHERE DepartmentId IN (SELECT DepartmentId FROM departments WHERE DepartmentName = 'Computer Science');
+```
+
+
+
+这非常令人印象深刻。在这种情况下，你提供了关于数据库模式的数据，并要求它生成一个有效的 MySQL 查询。
+
+------
+
+## 推理
+
+也许，当今大型语言模型（LLM）面临的最困难任务之一是需要某种形式的推理的任务。推理是最具吸引力的领域之一，因为有了推理，就可以从LLM中涌现出各种复杂的应用类型。
+
+目前，涉及数学能力的推理任务已经有了一些改进。 对于当前的大型语言模型来说，执行推理任务可能会有一些难度，因此就需要更高级的提示词工程技术。 我们会在后面的指南中介绍这些高级技术。 现在，我们将介绍几个基本示例来展示算术功能。
+
+*提示词：*
+
+```
+What is 9,000 * 9,000?
+```
+
+
+
+*输出：*
+
+```
+81,000,000
+```
+
+
+
+来，我们加大难度：
+
+*提示词：*
+
+```
+The odd numbers in this group add up to an even number: 15, 32, 5, 13, 82, 7, 1. A: 
+```
+
+
+
+*输出：*
+
+```
+No, the odd numbers in this group add up to an odd number: 119.
+```
+
+
+
+这不对！ 我们试着用提示词去改进它：
+
+*提示词：*
+
+```
+The odd numbers in this group add up to an even number: 15, 32, 5, 13, 82, 7, 1. Solve by breaking the problem into steps. First, identify the odd numbers, add them, and indicate whether the result is odd or even. 
+```
+
+
+
+*输出：*
+
+```
+Odd numbers: 15, 5, 13, 7, 1Sum: 41 41 is an odd number.
+```
+
+
+
+效果好多了，对吧？顺便提一下，我们尝试了几次这个任务，模型有时会失败。如果你提供更好的指令并结合示例，这可能有助于获得更准确的结果。
+
+在后面的章节，我们将介绍更高级的提示工程概念和技术，以完成更困难任务。

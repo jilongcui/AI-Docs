@@ -1,57 +1,140 @@
-# 3.1 什么是RAG
+# 4.1 提示工程介绍
 
-说了这么多，下面我们来介绍一下什么是 RAG 。
+提示工程是一个较新的学科，应用于开发和优化提示词（Prompt），帮助用户有效地将语言模型用于各种应用场景和研究领域。
 
-RAG 是检索增强生成（Retrieval Augmented Generation ）的简称，它为大语言模型 (LLMs) 提供了从数据源检索信息的能力，并以此为基础生成回答。简而言之，RAG 结合了信息检索技术和大语言模型的提示功能，即模型根据搜索算法找到的信息作为上下文来查询回答问题。无论是查询还是检索的上下文，都会被整合到发给大语言模型的提示中。
+提示工程(PromptEngineering)也叫**指令工程**，就是探讨如何设计出最佳提示词，用于指导语言模型帮助我们高效完成某项任务。
 
-![02a43de8239e3d7cdcf63585493e9364a5185c](https://img-blog.csdnimg.cn/img_convert/8a15bd10980833720ce40761c32f979d.webp?x-oss-process=image/format,png)
+Prompt(提示词) 即发送给大模型的指令，比如「讲个故事」等。
 
-RAG 的架构如图中所示。它既不是一个特定的开源代码库，也不是某个特定的应用，是一个开发框架。
+- Prompt 是 AGI时代的「编程语」
+- Prompt 工程是 AGI时代的「软件工程」
+- 提示工程师是 AGI 时代的「程序员」
 
-完整的 RAG 应用流程主要包含两个阶段：
+### 提示词格式
 
-数据准备阶段：（A）数据提取–> （B）分块（Chunking）–> （C）向量化（embedding）–> （D）数据入库
+标准提示词应该遵循以下格式：
 
-检索生成阶段：（1）问题向量化–> （2）根据问题查询匹配数据–> （3）获取索引数据 --> （4）将数据注入Prompt–> （5）LLM生成答案
-
-下面让我们展开介绍一下这两个阶段的关键环节。
-
-数据准备阶段
-数据准备一般是一个离线的过程，主要是将私有数据向量化后构建索引并存入数据库的过程。主要包括：数据提取、文本分割、向量化、数据入库等环节。
-
-1、数据提取：将 PDF、word、markdown、数据库和API等多种格式的数据，进行过滤、压缩、格式化等处理为同一个范式。
-
-2、分块（Chunking）：将初始文档分割成一定大小的块，尽量不要失去语义含义。将文本分割成句子或段落，而不是将单个句子分成多部分。有多种文本分割器实现能够完成此任务。比如根据换行、句号、问号、感叹号等切分文本，或者以其他的合适大小的 chunk 为原则进行分割。最终将语料分割成 chunk 块，在检索时会取相关性最高的 top_n。
-
-3、向量化(embedding)：将文本数据转化为向量矩阵的过程，该过程会直接影响到后续检索的效果。常用的 embedding 模型：moka-ai/m3e-base、GanymedeNil/text2vec-large-chinese，也可以参考 Hugging Face 推出的嵌入模型排行榜 MTEB Leaderboard。
-
-4、数据入库：数据向量化后构建索引，并写入向量数据库的过程可以概述为数据入库，适用于 RAG 场景的向量数据库包括：facebookresearch/faiss（本地）、Chroma、Elasticsearch、Milvus 等。一般可以根据业务场景、硬件、性能需求等多因素综合考虑，选择合适的数据库。
-
-应用阶段
-在应用阶段，根据用户的提问，将提问问题向量化处理，然后通过高效的检索方法，从向量数据库中召回与提问最相关的知识，并融入 Prompt；大模型参考当前提问和相关知识，生成相应的答案。关键环节包括：数据检索、注入 Prompt 等。
-
-1、数据检索
-
-常见的数据检索方法包括：相似性检索、全文检索等。以及可以结合多种检索方式，提升召回率。
-
-相似性检索：即计算查询向量与所有存储向量的相似性得分，返回得分高的记录。常见的相似性计算方法包括：余弦相似性、欧氏距离、曼哈顿距离等。
-
-全文检索：全文检索是一种比较经典的检索方式，在数据存入时，通过关键词构建倒排索引；在检索时，通过关键词进行全文检索，找到对应的记录。
-
-RAG 文本检索环节中的主流方法是相似性检索（向量检索），即语义相关度匹配的方式。想了解更多检索方式和检索的优化请查看文章，综述等文章。
-
-2、注入 Prompt
-
-Prompt 作为大模型的直接输入，是影响模型输出准确率的关键因素之一。在 RAG 场景中，Prompt 一般包括任务描述、背景知识（检索得到）、任务指令（一般是用户提问）等，根据任务场景和大模型性能，也可以在 Prompt 中适当加入其他指令优化大模型的输出。一个简单知识问答场景的 Prompt 如下所示：
-
-```
-prompt = f"""
-Give the answer to the user query delimited by triple backticks ```{query}```\
-using the information given in context delimited by triple backticks ```{context}```.\
-If there is no relevant information in the provided context, try to answer yourself,
-but tell user that you did not have any relevant context to base your answer on.
-Be concise and output the answer of size less than 80 tokens.
-"""   
+```text
+<问题>?
 ```
 
-Prompt 的设计只有方法、没有语法，比较依赖于个人经验，在实际应用过程中，往往需要根据大模型的实际输出进行针对性的 Prompt 调优。
+或
+
+```text
+<指令>
+```
+
+你可以将其格式化为问答（QA）格式，这在许多问答数据集中是标准格式，如下所示：
+
+```text
+Q: <问题>?
+A: 
+```
+
+当像上面那样提示时，这也被称为**零样本提示**
+
+基于以上标准格式（format），一种流行且有效的提示技术被称为**少样本提示**，其中你提供示例（即示范）。你可以按照以下格式组织少样本提示：
+
+```text
+<问题>?
+<答案>
+<问题>?
+<答案>
+<问题>?
+<答案>
+<问题>?
+```
+
+问答格式的版本看起来像这样：
+
+```text
+Q: <问题>?
+A: <答案>
+Q: <问题>?
+A: <答案>
+Q: <问题>?
+A: <答案>
+Q: <问题>?
+A:
+```
+
+### prompt的构成
+
+#### 提示词要素
+
+Prompt的组成主要包括指令(Instruction)、输入数据(Input Data)、上下文(Context)以及输出指示器(0utput Indicator)，这些构成了提示词的核心要素，对于设计有效的AI交互至关重要;
+
+- **指令**: 想要模型执行的特定任务或指令。
+- **[上下文](https://zhida.zhihu.com/search?content_id=246856288&content_type=Article&match_order=2&q=上下文&zhida_source=entity)**: 包含外部信息或额外的上下文信息，引导语言模型更好地响应。
+- **输入数据:** 用户输入的内容或问题。
+- **输出指示**: 指定输出的类型或格式。
+
+从Prompt的内容和形式，可以将其分为:
+
+- **零样本提示(Zero-shot prompts)**: 用户仅提供了一个任务描述;
+- **少样本提示(Few-shot prompts)**: 用户提供如何完成任务的示例: （给出例子）
+
+### 零样本提示
+
+经过大量数据训练并调整指令的LLM能够执行零样本任务
+
+提示
+
+```text
+将文本分类为中性、负面或正面。
+文本：我认为这次假期还可以。
+情感：
+```
+
+输出
+
+```text
+中性
+```
+
+在上面的提示中，我们没有向模型提供任何示例——这就是零样本能力的作用。
+
+指令调整已被证明可以改善零样本学习[Wei等人（2022）(opens in a new tab)](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2109.01652.pdf)。指令调整本质上是在通过指令描述的数据集上微调模型的概念。此外，[RLHF(opens in a new tab)](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1706.03741)（来自人类反馈的强化学习）已被采用以扩展指令调整，其中模型被调整以更好地适应人类偏好。这一最新发展推动了像ChatGPT这样的模型。
+
+### 少样本提示
+
+当零样本不足以满足给出描述时，就需要给是例子，来得到期望得到的结果。
+
+根据 [Touvron et al. 2023(opens in a new tab)](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2302.13971.pdf) 等人的在 2023 年的论文，当模型规模足够大时，小样本提示特性开始出现 [(Kaplan et al., 2020)(opens in a new tab)](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2001.08361)。
+
+让我们通过[Brown等人2020年(opens in a new tab)](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2005.14165)提出的一个例子来演示少样本提示。在这个例子中，任务是在句子中正确使用一个新词。
+
+*提示：*
+
+```text
+“whatpu”是坦桑尼亚的一种小型毛茸茸的动物。一个使用whatpu这个词的句子的例子是：
+我们在非洲旅行时看到了这些非常可爱的whatpus。
+“farduddle”是指快速跳上跳下。一个使用farduddle这个词的句子的例子是：
+```
+
+*输出：*
+
+```text
+当我们赢得比赛时，我们都开始庆祝跳跃。
+```
+
+我们可以观察到，模型通过提供一个示例（即1-shot）已经学会了如何执行任务。对于更困难的任务，我们可以尝试增加演示。
+
+**少样本提示的限制**
+
+标准的少样本提示对许多任务都有效，但仍然不是一种完美的技术，特别是在处理更复杂的推理任务时。
+
+让我们演示为什么会这样。
+
+```text
+这组数字中的奇数加起来是一个偶数：15、32、5、13、82、7、1。
+A：
+```
+
+如果我们再试一次，模型输出如下：
+
+```text
+是的，这组数字中的奇数加起来是107，是一个偶数。
+```
+
+这没用。似乎少样本提示不足以获得这种类型的[推理问题](https://zhida.zhihu.com/search?content_id=246856288&content_type=Article&match_order=1&q=推理问题&zhida_source=entity)的可靠响应。上面的示例提供了任务的基本信息。如果您仔细观察，我们引入的任务类型涉及几个更多的推理步骤。换句话说，如果我们将问题分解成步骤并向模型演示，这可能会有所帮助。最近，[思维链（CoT）提示(opens in a new tab)](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2201.11903)已经流行起来，以解决更复杂的算术、常识和符号推理任务。
