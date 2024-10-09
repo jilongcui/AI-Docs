@@ -1,2 +1,2 @@
-# Introduction
+# 分子医学AI实验平台课程
 
