@@ -125,7 +125,7 @@ LLM 节点配置-选择模型
 
 **配置步骤：**
 
-1. **选择模型**，Dify 提供了全球主流模型的[支持](https://docs.dify.ai/v/zh-hans/getting-started/readme/model-providers)，包括 OpenAI 的 GPT 系列、Anthropic 的 Claude 系列、Google 的 Gemini 系列等，选择一个模型取决于其推理能力、成本、响应速度、上下文窗口等因素，你需要根据场景需求和任务类型选择合适的模型。
+1. **选择模型**， 提供了全球主流模型的[支持](https://docs.dify.ai/v/zh-hans/getting-started/readme/model-providers)，包括 OpenAI 的 GPT 系列、Anthropic 的 Claude 系列、Google 的 Gemini 系列等，选择一个模型取决于其推理能力、成本、响应速度、上下文窗口等因素，你需要根据场景需求和任务类型选择合适的模型。
 
 2. **配置模型参数**，模型参数用于控制模型的生成结果，例如温度、TopP，最大标记、回复格式等，为了方便选择系统同时提供了 3 套预设参数：创意，平衡和精确。
 
@@ -135,7 +135,7 @@ LLM 节点配置-选择模型
 
    **高级设置**，可以开关记忆，设置记忆窗口，使用 Jinja-2 模版语言来进行更复杂的提示词等。
 
-如果你是初次使用 Dify ，在 LLM 节点选择模型之前，需要在 **系统设置—模型供应商** 内提前完成[模型配置](https://docs.dify.ai/v/zh-hans/guides/model-configuration)。
+如果你是初次使用 MedAI ，在 LLM 节点选择模型之前，需要在 **系统设置—模型供应商** 内提前完成[模型配置](https://docs.dify.ai/v/zh-hans/guides/model-configuration)。
 
 #### **编写提示词**
 
@@ -176,7 +176,7 @@ LLM 节点配置-选择模型
 
 **会话历史**
 
-为了在文本补全类模型（例如 gpt-3.5-turbo-Instruct）内实现聊天型应用的对话记忆，Dify 在原[提示词专家模式（已下线）](https://github.com/langgenius/dify-docs/blob/main/zh_CN/learn-more/extended-reading/prompt-engineering/prompt-engineering-1/README.md)内设计了会话历史变量，该变量沿用至 Chatflow 的 LLM 节点内，用于在提示词中插入 AI 与用户之间的聊天历史，帮助 LLM 理解对话上文。
+为了在文本补全类模型（例如 gpt-3.5-turbo-Instruct）内实现聊天型应用的对话记忆，MedAI 在原[提示词专家模式（已下线）](https://github.com/langgenius/dify-docs/blob/main/zh_CN/learn-more/extended-reading/prompt-engineering/prompt-engineering-1/README.md)内设计了会话历史变量，该变量沿用至 Chatflow 的 LLM 节点内，用于在提示词中插入 AI 与用户之间的聊天历史，帮助 LLM 理解对话上文。
 
 
 
@@ -222,7 +222,7 @@ LLM 节点配置-选择模型
 **配置流程：**
 
 1. 选择查询变量，用于作为输入来检索知识库中的相关文本分段，在常见的对话类应用中一般将开始节点的 `sys.query` 作为查询变量；
-2. 选择需要查询的知识库，可选知识库需要在 Dify 知识库内预先[创建](https://github.com/langgenius/dify-docs/blob/main/zh_CN/guides/knowledge-base/create-knowledge-and-upload-documents/README.md#id-1-chuang-jian-zhi-shi-ku)；
+2. 选择需要查询的知识库，可选知识库需要在 MedAI 知识库内预先[创建](https://github.com/langgenius/dify-docs/blob/main/zh_CN/guides/knowledge-base/create-knowledge-and-upload-documents/README.md#id-1-chuang-jian-zhi-shi-ku)；
 3. 指定[召回模式](https://docs.dify.ai/v/zh-hans/learn-more/extended-reading/retrieval-augment/retrieval)。自 9 月 1 日后，知识库的召回模式将自动切换为多路召回，不再建议使用 N 选 1 召回模式；
 4. 连接并配置下游节点，一般为 LLM 节点；
 

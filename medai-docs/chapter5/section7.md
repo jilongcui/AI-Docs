@@ -2,7 +2,7 @@
 
 # 预览与运行
 
-Dify Workflow 提供了一套完整的运行调试功能，在对话型应用中点击「预览」进入调试模式。
+MedAI Workflow 提供了一套完整的运行调试功能，在对话型应用中点击「预览」进入调试模式。
 
 ![img](https://docs.dify.ai/~gitbook/image?url=https%3A%2F%2F1288284732-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FCdDIVDY6AtAz028MFT4d%252Fuploads%252FJ5uVRLkcvfsBzhm0Aexc%252Foutput.png%3Falt%3Dmedia%26token%3Dd996e327-c6d9-4b39-af41-0f8e64e39444&width=768&dpr=4&quality=100&sign=5972876b&sv=1)
 

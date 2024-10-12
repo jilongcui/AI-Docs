@@ -1,6 +1,6 @@
 # 5.14 从网页导入知识库
 
-Dify 知识库通过集成 Firecrawl ，支持网页抓取并解析为 Markdown 导入至知识库。
+MedAI 知识库通过集成 Firecrawl ，支持网页抓取并解析为 Markdown 导入至知识库。
 
 
 

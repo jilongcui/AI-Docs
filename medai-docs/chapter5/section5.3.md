@@ -195,7 +195,7 @@ Copy
 
 利用 LLM 从自然语言推理并提取结构化参数，用于后置的工具调用或 HTTP 请求。
 
-Dify 工作流内提供了丰富的[工具](https://docs.dify.ai/v/zh-hans/guides/tools)选择，其中大多数工具的输入为结构化参数，参数提取器可以将用户的自然语言转换为工具可识别的参数，方便工具调用。
+MedAI 工作流内提供了丰富的[工具](https://docs.dify.ai/v/zh-hans/guides/tools)选择，其中大多数工具的输入为结构化参数，参数提取器可以将用户的自然语言转换为工具可识别的参数，方便工具调用。
 
 工作流内的部分节点有特定的数据格式传入要求，如[迭代](https://docs.dify.ai/v/zh-hans/guides/workflow/node/iteration#id-1-ding-yi)节点的输入要求为数组格式，参数提取器可以方便的实现[结构化参数的转换](https://docs.dify.ai/v/zh-hans/guides/workflow/node/iteration#id-2-chang-jing)。
 
@@ -283,8 +283,8 @@ HTTP 请求的返回值包括响应体、状态码、响应头和文件。值得
 
 “工具”节点可以为工作流提供强大的第三方能力支持，分为以下三种类型：
 
-- **内置工具**，Dify 第一方提供的工具，使用该工具前可能需要先给工具进行 **授权**。
-- **自定义工具**，通过 [OpenAPI/Swagger 标准格式](https://swagger.io/specification/)导入或配置的工具。如果内置工具无法满足使用需求，你可以在 **Dify 菜单导航 --工具** 内创建自定义工具。
+- **内置工具**，MedAI 第一方提供的工具，使用该工具前可能需要先给工具进行 **授权**。
+- **自定义工具**，通过 [OpenAPI/Swagger 标准格式](https://swagger.io/specification/)导入或配置的工具。如果内置工具无法满足使用需求，你可以在 **MedAI 菜单导航 --工具** 内创建自定义工具。
 - **工作流**，你可以编排一个更复杂的工作流，并将其发布为工具。详细说明请参考[工具配置说明](https://docs.dify.ai/v/zh-hans/guides/tools)。
 
 ### 添加工具节点

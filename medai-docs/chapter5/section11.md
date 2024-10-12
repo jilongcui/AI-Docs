@@ -112,7 +112,7 @@
 
 
 
-在知识库召回模式为 N 选 1 时，知识库作为工具提供给 LLM 进行推理调用，推理依据是知识库的描述，如果描述为空则会使用 Dify 的自动索引策略
+在知识库召回模式为 N 选 1 时，知识库作为工具提供给 LLM 进行推理调用，推理依据是知识库的描述，如果描述为空则会使用 MedAI 的自动索引策略
 
 **可见权限**，可选择 「 只有我 」 或 「 所有团队成员 」，不具有权限的人将无法查阅和编辑数据集。
 
@@ -126,7 +126,7 @@
 
 ### 9 知识库 API 管理
 
-Dify 知识库提供整套标准 API ，开发者通过 API 调用对知识库内的文档、分段进行增删改查等日常管理维护操作，请参考[知识库 API 文档](https://docs.dify.ai/v/zh-hans/guides/knowledge-base/maintain-dataset-via-api)。
+MedAI 知识库提供整套标准 API ，开发者通过 API 调用对知识库内的文档、分段进行增删改查等日常管理维护操作，请参考[知识库 API 文档](https://docs.dify.ai/v/zh-hans/guides/knowledge-base/maintain-dataset-via-api)。
 
 ![img](https://docs.dify.ai/~gitbook/image?url=https%3A%2F%2F1288284732-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FCdDIVDY6AtAz028MFT4d%252Fuploads%252FqqERjUP6VxL7DjsBbpks%252Fimage.png%3Falt%3Dmedia%26token%3D2ae1af89-6620-4cc6-8bb6-20bf47e879de&width=768&dpr=4&quality=100&sign=ee9f2be1&sv=1)
 

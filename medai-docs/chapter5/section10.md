@@ -4,7 +4,7 @@
 
 创建知识库并上传文档大致分为以下步骤**：**
 
-1. 在 Dify 团队内创建知识库，从本地选择你需要上传的文档；
+1. 在 MedAI 团队内创建知识库，从本地选择你需要上传的文档；
 2. 选择分段与清洗模式，预览效果；
 3. 配置索引方式和检索设置；
 4. 等待分段嵌入；
@@ -14,7 +14,7 @@
 
 ### 1 创建知识库
 
-在 Dify 主导航栏中点击知识库，在该页面你可以看到团队内的知识库，点击“**创建知识库”** 进入创建向导。
+在 MedAI 主导航栏中点击知识库，在该页面你可以看到团队内的知识库，点击“**创建知识库”** 进入创建向导。
 
 - 拖拽或选中文件进行上传，批量上传的文件数量取决于[订阅计划](https://dify.ai/pricing);
 - 如果还没有准备好文档，可以先创建一个空知识库;
@@ -42,7 +42,7 @@
 
 #### 自动分段与清洗
 
-自动模式适合对分段规则与预处理规则尚不熟悉的初级用户。在该模式下，Dify 将为你自动分段与清洗内容文件。
+自动模式适合对分段规则与预处理规则尚不熟悉的初级用户。在该模式下，MedAI 将为你自动分段与清洗内容文件。
 
 ### 3 索引方式
 
@@ -66,7 +66,7 @@
 
 ### 4 检索设置
 
-在**高质量索引方式**下，Dify 提供以下 3 种检索方案：
+在**高质量索引方式**下，MedAI 提供以下 3 种检索方案：
 
 - #### **向量检索**
 
@@ -90,7 +90,7 @@
 
 ------
 
-在**经济索引方式**下，Dify 仅提供 1 种检索设置：
+在**经济索引方式**下，MedAI 仅提供 1 种检索设置：
 
 #### **倒排索引**
 
@@ -108,10 +108,10 @@
 
 #### ETL
 
-在 RAG 的生产级应用中，为了获得更好的数据召回效果，需要对多源数据进行预处理和清洗，即 ETL （*extract, transform, load*）。为了增强非结构化/半结构化数据的预处理能力，Dify 支持了可选的 ETL 方案：**Dify ETL** 和[ ](https://docs.unstructured.io/welcome)[**Unstructured ETL** ](https://unstructured.io/)。Unstructured 能够高效地提取并转换您的数据为干净的数据用于后续的步骤。Dify 各版本的 ETL 方案选择：
+在 RAG 的生产级应用中，为了获得更好的数据召回效果，需要对多源数据进行预处理和清洗，即 ETL （*extract, transform, load*）。为了增强非结构化/半结构化数据的预处理能力，MedAI 支持了可选的 ETL 方案：**Dify ETL** 和[ ](https://docs.unstructured.io/welcome)[**Unstructured ETL** ](https://unstructured.io/)。Unstructured 能够高效地提取并转换您的数据为干净的数据用于后续的步骤。Dify 各版本的 ETL 方案选择：
 
 - SaaS 版不可选，默认使用 Unstructured ETL；
-- 社区版可选，默认使用 Dify ETL ，可通过[环境变量](https://docs.dify.ai/v/zh-hans/getting-started/install-self-hosted/environments#zhi-shi-ku-pei-zhi)开启 Unstructured ETL；
+- 社区版可选，默认使用 MedAI ETL ，可通过[环境变量](https://docs.dify.ai/v/zh-hans/getting-started/install-self-hosted/environments#zhi-shi-ku-pei-zhi)开启 Unstructured ETL；
 
 文件解析支持格式的差异：
 

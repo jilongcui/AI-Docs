@@ -2,7 +2,7 @@
 
 ### 1 召回测试
 
-Dify 知识库内提供了文本召回测试的功能，用于调试不同检索方式及参数配置下的召回效果。你可以在 **源文本** 输入框输入常见的用户问题，点击 **测试** 并在右侧的 **召回段落** 查看召回结果。在 **最近查询** 内可以查看到历史的查询记录；若知识库已关联至应用内，由应用内触发的知识库查询也可以在此查看记录。
+MedAI 知识库内提供了文本召回测试的功能，用于调试不同检索方式及参数配置下的召回效果。你可以在 **源文本** 输入框输入常见的用户问题，点击 **测试** 并在右侧的 **召回段落** 查看召回结果。在 **最近查询** 内可以查看到历史的查询记录；若知识库已关联至应用内，由应用内触发的知识库查询也可以在此查看记录。
 
 ![img](https://docs.dify.ai/~gitbook/image?url=https%3A%2F%2F1288284732-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FCdDIVDY6AtAz028MFT4d%252Fuploads%252FHLHhqhv4IbNGrAIWVQgC%252Fimage.png%3Falt%3Dmedia%26token%3Deb119d48-e564-468b-a66c-a617075abca9&width=768&dpr=4&quality=100&sign=9665f1f&sv=1)
 

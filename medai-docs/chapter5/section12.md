@@ -2,7 +2,7 @@
 
 ### 在应用内引用知识库
 
-知识库可以作为外部知识提供给大语言模型用于精确回复用户问题，你可以在 Dify 的[所有应用类型](https://docs.dify.ai/v/zh-hans/guides/application-orchestrate#application_type)内关联已创建的知识库。
+知识库可以作为外部知识提供给大语言模型用于精确回复用户问题，你可以在 MedAI 的[所有应用类型](https://docs.dify.ai/v/zh-hans/guides/application-orchestrate#application_type)内关联已创建的知识库。
 
 以聊天助手为例，使用流程如下：
 
@@ -84,7 +84,7 @@ Rerank 模型是一种外部评分系统，它会计算用户问题与给定的�
 
 > 点击了解更多[重排序](https://docs.dify.ai/v/zh-hans/learn-more/extended-reading/retrieval-augment/rerank)机制。
 
-Dify 目前支持多个 Rerank 模型，进入 “模型供应商” 页填入 Rerank 模型（例如 Cohere、Jina AI 等模型）的 API Key。
+MedAI 目前支持多个 Rerank 模型，进入 “模型供应商” 页填入 Rerank 模型（例如 Cohere、Jina AI 等模型）的 API Key。
 
 ![img](https://docs.dify.ai/~gitbook/image?url=https%3A%2F%2F1288284732-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FCdDIVDY6AtAz028MFT4d%252Fuploads%252Fgit-blob-244e5a2952cb26c49625e776fba486802f83dba7%252Fzh-rerank-model-api.png%3Falt%3Dmedia&width=768&dpr=4&quality=100&sign=f60079a8&sv=1)
 
